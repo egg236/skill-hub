@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "id": "git-confirm-pr",
+  "version": "1.0.1",
+  "description": "Demo: Git branch, commit, and PR flow with explicit publish confirmation.",
+  "family": "git-workflow"
+}

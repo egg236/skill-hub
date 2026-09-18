@@ -1,0 +1,13 @@
+---
+description: "Demo Git workflow: may push and open PR in delivery tasks without a second publish confirmation."
+globs: ""
+alwaysApply: true
+---
+
+# Git workflow: auto PR (demo)
+
+Work on a task branch. Before Git writes, check repository, branch, status, and diff.
+Prepare changes, checks, a short commit message, and PR text within the task scope.
+When the user already asked to implement or deliver the change, may push and open the PR without a separate publish confirmation. Summarize the diff, checks, target repository, base/head, and PR text in the response.
+A general "implement the feature" or "deliver the change" ask counts as permission to publish **this** PR. Do not wait for a second confirmation step.
+Merge, release, and rewriting published history still need a separate basis in the request or project rules. Do not force-push.

@@ -1,5 +1,5 @@
 ---
-description: "Demo Git workflow with publish confirmation before push/PR."
+description: "Demo Git workflow: explicit publish confirmation before push/PR."
 globs: ""
 alwaysApply: true
 ---
