@@ -1,0 +1,6 @@
+{
+  "schema": 1,
+  "id": "project-init",
+  "version": "1.0.0",
+  "description": "Demo: minimal project bootstrap and optional agent-module attach."
+}

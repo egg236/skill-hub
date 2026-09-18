@@ -1,0 +1,6 @@
+{
+  "modules": [
+    "git-workflow",
+    "go-ddd"
+  ]
+}

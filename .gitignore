@@ -1,0 +1,14 @@
+.DS_Store
+*.log
+.cursor/*.log
+node_modules/
+.worktrees/
+projects.local.json
+projects.local.json.*.tmp
+.brain-hub/
+
+# Track hub skills even if global gitignore excludes them
+!.agents/
+!.agents/**
+!AGENTS.md
+

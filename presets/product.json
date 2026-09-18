@@ -1,0 +1,8 @@
+{
+  "modules": [
+    "git-workflow",
+    "go-ddd",
+    "skill-authoring",
+    "project-init"
+  ]
+}

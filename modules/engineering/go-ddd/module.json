@@ -1,0 +1,6 @@
+{
+  "schema": 1,
+  "id": "go-ddd",
+  "version": "1.0.0",
+  "description": "Demo: Go services with DDD building blocks (domain, application, adapters)."
+}

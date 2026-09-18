@@ -1,0 +1,13 @@
+---
+description: "Demo Git workflow with publish confirmation before push/PR."
+globs: ""
+alwaysApply: true
+---
+
+# Git workflow: confirm before publish (demo)
+
+Work on a task branch. Before Git writes, check repository, branch, status, and diff.
+Prepare changes, checks, a short commit message, and PR text within the task scope.
+Before push and PR creation, show the ready diff, check results, target repository, base/head, and PR text. Wait for publish confirmation.
+If the user already explicitly allowed publishing **this** PR, do not ask again. A general "implement the feature" ask is not publish confirmation.
+Merge, release, and rewriting published history need a separate basis in the request or project rules.

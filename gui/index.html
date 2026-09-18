@@ -1,0 +1,41 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>skill-hub · Модули и проекты</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234f46e5'/%3E%3Ctext x='32' y='44' font-size='42' text-anchor='middle' fill='white' font-family='sans-serif'%3Eb%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+  <script src="/workspace-ui.js" defer></script>
+  <script src="/editors.js" defer></script>
+  <script src="/project-conversion.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="skill-hub"><span class="brand-mark">b.</span><span>skill-hub<small>Твой рабочий контекст</small></span></a>
+    <div class="nav-label">БИБЛИОТЕКА</div>
+    <nav aria-label="Разделы">
+      <button class="nav-item active" data-view="modules"><span>◈ &nbsp; Модули</span><span id="module-count" class="count">—</span></button>
+      <button class="nav-item" data-view="projects"><span>▤ &nbsp; Проекты</span><span id="project-count" class="count">—</span></button>
+    </nav>
+    <div id="group-nav"></div>
+    <div class="sidebar-footer"><span class="status-dot"></span> Локальный хаб<small>Твои файлы. Твои правила.</small></div>
+  </aside>
+  <main>
+    <header class="topbar"><span id="breadcrumb">Библиотека / Модули</span><button id="refresh" class="quiet">↻ Обновить</button></header>
+    <div class="page">
+      <div class="page-heading"><div><div class="eyebrow">SKILL-HUB / WORKSPACE</div><h1 id="page-title">Модули</h1><p id="page-description">Собери нужные возможности для каждого проекта.</p></div><button id="primary-action" class="primary">+ Создать модуль</button></div>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <section id="modules-view" aria-label="Каталог модулей">
+        <div class="toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" aria-label="Поиск модулей и скиллов" placeholder="Найти модуль или скилл…"></label><span id="result-count" class="muted"></span></div>
+        <div id="catalog"></div>
+      </section>
+      <section id="projects-view" aria-label="Проекты" hidden><div id="projects"></div></section>
+    </div>
+  </main>
+  <dialog id="dialog"><div id="dialog-content"></div></dialog>
+  <noscript>Для локального интерфейса нужен JavaScript.</noscript>
+</body>
+</html>
