@@ -62,16 +62,18 @@ function addFamilyPair(base) {
 test('catalog lists demo modules with stable ids', () => {
   const { base, store } = fixture();
   const available = catalog(base);
-  assert.ok(available.has('git-workflow'));
+  assert.ok(available.has('git-confirm-pr'));
+  assert.ok(available.has('git-auto-pr'));
   assert.ok(available.has('go-ddd'));
-  assert.equal(store.module('git-workflow').group, 'workflow');
+  assert.equal(store.module('git-confirm-pr').group, 'workflow');
+  assert.equal(store.module('git-confirm-pr').family, 'git-workflow');
   assert.equal(store.module('go-ddd').group, 'engineering');
 });
 
 test('grouped catalog preserves flat IDs; moving folders does not change installed files', () => {
   const { base, target, store } = fixture();
   const available = catalog(base);
-  const modules = selection(['git-workflow', 'go-ddd'], available);
+  const modules = selection(['git-confirm-pr', 'go-ddd'], available);
   apply(target, plan(target, modules));
   const before = snapshot(target);
   const go = available.get('go-ddd');
@@ -79,7 +81,7 @@ test('grouped catalog preserves flat IDs; moving folders does not change install
   fs.mkdirSync(path.dirname(moved), { recursive: true });
   fs.renameSync(go.root, moved);
   assert.equal(store.module('go-ddd').group, 'extra');
-  assert.deepEqual(plan(target, selection(['git-workflow', 'go-ddd'], catalog(base))), []);
+  assert.deepEqual(plan(target, selection(['git-confirm-pr', 'go-ddd'], catalog(base))), []);
   assert.deepEqual(snapshot(target), before);
 });
 
@@ -120,13 +122,13 @@ test('registration persists projects and adds Cursor exclusion while preserving 
 test('project preview, apply, set switching, stale previews and local edits', () => {
   const { target, store } = fixture();
   const project = store.register({ name: 'Demo', path: target });
-  const preview = store.preview(project.id, ['git-workflow', 'go-ddd']);
+  const preview = store.preview(project.id, ['git-confirm-pr', 'go-ddd']);
   assert.ok(preview.changes.length > 0);
-  store.apply(project.id, ['git-workflow', 'go-ddd'], preview.fingerprint);
+  store.apply(project.id, ['git-confirm-pr', 'go-ddd'], preview.fingerprint);
   assert.ok(fs.existsSync(path.join(target, '.agents/skills/git-workflow/SKILL.md')));
   assert.ok(fs.existsSync(path.join(target, '.agents/skills/go-ddd/SKILL.md')));
-  const next = store.preview(project.id, ['git-workflow']);
-  store.apply(project.id, ['git-workflow'], next.fingerprint);
+  const next = store.preview(project.id, ['git-confirm-pr']);
+  store.apply(project.id, ['git-confirm-pr'], next.fingerprint);
   assert.ok(!fs.existsSync(path.join(target, '.agents/skills/go-ddd/SKILL.md')));
   fs.appendFileSync(path.join(target, '.agents/skills/git-workflow/SKILL.md'), '\nedit');
   assert.throws(() => store.preview(project.id, ['go-ddd']), /локальн|local|изменен|изменён|файл|status|редактир/i);
@@ -177,11 +179,12 @@ test('HTTP API serves UI, enforces local origin and token, and completes project
     const catalogResponse = await get('/api/catalog', { 'x-hub-token': session.token });
     assert.equal(catalogResponse.status, 200);
     const payload = JSON.parse(catalogResponse.body);
-    assert.ok(payload.modules.some(module => module.id === 'git-workflow'));
+    assert.ok(payload.modules.some(module => module.id === 'git-confirm-pr'));
+    assert.ok(payload.modules.some(module => module.id === 'git-auto-pr'));
     assert.ok(payload.presets.length >= 1);
     const created = JSON.parse((await post('/api/projects', { name: 'API', path: target }, { 'x-hub-token': session.token })).body);
     assert.ok(created.id);
-    const preview = JSON.parse((await post(`/api/projects/${created.id}/preview`, { modules: ['git-workflow'] }, { 'x-hub-token': session.token })).body);
+    const preview = JSON.parse((await post(`/api/projects/${created.id}/preview`, { modules: ['git-confirm-pr'] }, { 'x-hub-token': session.token })).body);
     assert.ok(preview.fingerprint);
     assert.ok(Array.isArray(preview.changes));
     assert.ok(preview.changes.length > 0);
@@ -193,8 +196,8 @@ test('HTTP API serves UI, enforces local origin and token, and completes project
 test('releases history can publish current catalog versions', () => {
   const { base } = fixture();
   const releases = history(base);
-  const module = catalog(base).get('git-workflow');
+  const module = catalog(base).get('git-auto-pr');
   releases.publish(module);
-  assert.ok(fs.existsSync(path.join(base, 'releases/git-workflow/1.0.0.json')));
-  assert.equal(releases.versions('git-workflow')[0], '1.0.0');
+  assert.ok(fs.existsSync(path.join(base, 'releases/git-auto-pr/1.0.0.json')));
+  assert.equal(releases.versions('git-auto-pr')[0], '1.0.0');
 });

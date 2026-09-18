@@ -3,7 +3,7 @@ name: git-workflow
 description: Prepares branch, commit, and PR with an explicit confirmation before push/publish. Use for delivering changes through Git.
 ---
 
-# Git workflow (demo)
+# Git workflow — confirm before publish (demo)
 
 1. Check the real Git root, branch, uncommitted changes, remote, and base branch.
 2. Stage only task-related paths or hunks.

@@ -3,7 +3,8 @@
 | id | group | purpose |
 |---|---|---|
 | `go-ddd` | engineering | Go DDD layering demo |
-| `git-workflow` | workflow | Git/PR flow with publish confirmation |
+| `git-confirm-pr` | workflow | Git/PR flow with explicit publish confirmation (family `git-workflow`) |
+| `git-auto-pr` | workflow | Git/PR flow without a second publish step in delivery tasks (family `git-workflow`) |
 | `skill-authoring` | authoring | How to write portable skills |
 | `project-init` | authoring | Minimal project bootstrap |
 

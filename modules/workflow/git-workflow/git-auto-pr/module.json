@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "id": "git-auto-pr",
+  "version": "1.0.1",
+  "description": "Demo: Git branch, commit, push, and PR without a second publish confirmation in delivery tasks.",
+  "family": "git-workflow"
+}

@@ -1,5 +1,5 @@
 {
   "modules": [
-    "git-workflow"
+    "git-confirm-pr"
   ]
 }

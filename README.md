@@ -12,9 +12,9 @@
 - «Создай скилл для проверки SQL-миграций».
 - «Инициализируй новый проект с минимальным набором».
 
-В самом хабе доступны служебные скиллы: hub-modules, hub-create-skill, hub-init-project .
+В самом хабе доступны служебные скиллы: hub-modules, hub-create-skill, hub-init-project .
 
-Демо-модули в каталоге: `go-ddd` (engineering) и `git-workflow` (workflow). Пресеты `minimal` / `product` / `autonomous` уже ссылаются на них.
+Демо-модули в каталоге: `go-ddd` (engineering) и два варианта Git family `git-confirm-pr` / `git-auto-pr` (workflow). Пресеты `minimal` / `product` / `autonomous` по умолчанию подключают `git-confirm-pr`; вариант можно заменить на `git-auto-pr`.
 Каталог modules сам по себе не включает содержащиеся в нём правила.
 
 ## Локальный GUI

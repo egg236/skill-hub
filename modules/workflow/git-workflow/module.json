@@ -1,6 +1,0 @@
-{
-  "schema": 1,
-  "id": "git-workflow",
-  "version": "1.0.0",
-  "description": "Demo: Git branch, commit, and PR flow with explicit publish confirmation."
-}

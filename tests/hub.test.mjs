@@ -58,7 +58,8 @@ function snapshot(root) {
 test('catalog and presets validate', () => {
   ok('validate');
   const listed = ok('list').output;
-  assert.match(listed, /git-workflow/);
+  assert.match(listed, /git-confirm-pr \[git-workflow\]/);
+  assert.match(listed, /git-auto-pr \[git-workflow\]/);
   assert.match(listed, /go-ddd/);
   assert.match(listed, /skill-authoring/);
   assert.match(listed, /project-init/);
@@ -88,7 +89,7 @@ test('every preset installs', () => {
 test('dry-run and invalid selections leave project untouched', () => {
   const target = project();
   const before = snapshot(target);
-  ok('apply', target, 'git-workflow', 'go-ddd', '--dry-run');
+  ok('apply', target, 'git-confirm-pr', 'go-ddd', '--dry-run');
   assert.deepEqual(snapshot(target), before);
   assert.equal(run('apply', target, 'unknown-module').code, 1);
   assert.equal(run('apply', target).code, 1);
@@ -97,16 +98,16 @@ test('dry-run and invalid selections leave project untouched', () => {
 
 test('repeated apply is idempotent; swapping set removes old module files', () => {
   const target = project();
-  ok('apply', target, 'git-workflow', 'go-ddd');
+  ok('apply', target, 'git-confirm-pr', 'go-ddd');
   const before = snapshot(target);
-  assert.match(ok('apply', target, 'go-ddd', 'git-workflow').output, /изменений нет|No changes|idempotent|без изменений|OK|applied|уже/i);
+  assert.match(ok('apply', target, 'go-ddd', 'git-confirm-pr').output, /изменений нет|No changes|idempotent|без изменений|OK|applied|уже/i);
   // second apply with same set should be a no-op (empty plan message varies) — at least exit 0 and same tree
-  ok('apply', target, 'git-workflow', 'go-ddd');
+  ok('apply', target, 'git-confirm-pr', 'go-ddd');
   assert.deepEqual(snapshot(target), before);
-  ok('apply', target, 'git-workflow');
+  ok('apply', target, 'git-confirm-pr');
   const agents = fs.readFileSync(path.join(target, 'AGENTS.md'), 'utf8');
   assert.ok(agents.startsWith(original));
-  assert.ok(agents.includes('git-workflow'));
+  assert.ok(agents.includes('git-confirm-pr'));
   assert.ok(!agents.includes('go-ddd'));
   assert.ok(!fs.existsSync(path.join(target, '.cursor/rules/skill-hub/go-ddd/go-ddd.mdc')));
   ok('status', target);
@@ -114,7 +115,7 @@ test('repeated apply is idempotent; swapping set removes old module files', () =
 
 test('local edits block update and removal before any writes', () => {
   const target = project();
-  ok('apply', target, 'git-workflow');
+  ok('apply', target, 'git-confirm-pr');
   fs.appendFileSync(path.join(target, '.agents/skills/git-workflow/SKILL.md'), '\nlocal edit');
   const before = snapshot(target);
   assert.equal(run('status', target).code, 1);
@@ -127,15 +128,15 @@ test('foreign files are never adopted or overwritten', () => {
   const target = project();
   const file = path.join(target, '.agents/skills/git-workflow/SKILL.md');
   fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.copyFileSync(path.join(catalog().get('git-workflow').root, 'skills/git-workflow/SKILL.md'), file);
+  fs.copyFileSync(path.join(catalog().get('git-confirm-pr').root, 'skills/git-workflow/SKILL.md'), file);
   const before = snapshot(target);
-  assert.equal(run('apply', target, 'git-workflow').code, 1);
+  assert.equal(run('apply', target, 'git-confirm-pr').code, 1);
   assert.deepEqual(snapshot(target), before);
 });
 
 test('removal preserves user additions and exact original AGENTS bytes', () => {
   const target = project();
-  ok('apply', target, 'git-workflow');
+  ok('apply', target, 'git-confirm-pr');
   const extra = path.join(target, '.agents/skills/git-workflow/user.txt');
   fs.writeFileSync(extra, 'keep');
   fs.appendFileSync(path.join(target, 'AGENTS.md'), '\n\n# User appendix\n');
@@ -148,15 +149,15 @@ test('removal preserves user additions and exact original AGENTS bytes', () => {
 
 test('missing managed file is repaired; changed managed AGENTS block is refused', () => {
   const target = project();
-  ok('apply', target, 'git-workflow');
+  ok('apply', target, 'git-confirm-pr');
   const skill = path.join(target, '.agents/skills/git-workflow/SKILL.md');
   fs.unlinkSync(skill);
   assert.equal(run('status', target).code, 1);
-  ok('apply', target, 'git-workflow');
+  ok('apply', target, 'git-confirm-pr');
   assert.ok(fs.existsSync(skill));
   const agents = path.join(target, 'AGENTS.md');
   const text = fs.readFileSync(agents, 'utf8');
-  fs.writeFileSync(agents, text.replace('git-workflow', 'mutated'));
+  fs.writeFileSync(agents, text.replace('git-confirm-pr', 'mutated'));
   const before = snapshot(target);
   assert.equal(run('apply', target, 'go-ddd').code, 1);
   assert.deepEqual(snapshot(target), before);
@@ -172,7 +173,7 @@ test('unsupported AGENTS encodings fail without changing any bytes', () => {
     const target = project();
     fs.writeFileSync(path.join(target, 'AGENTS.md'), bytes);
     const before = snapshot(target);
-    assert.equal(run('apply', target, 'git-workflow').code, 1);
+    assert.equal(run('apply', target, 'git-confirm-pr').code, 1);
     assert.deepEqual(snapshot(target), before);
   }
 });
@@ -183,19 +184,19 @@ test('dangling links and directory junctions cannot redirect writes', t => {
   fs.unlinkSync(path.join(target, 'AGENTS.md'));
   try { fs.symlinkSync(outside, path.join(target, 'AGENTS.md'), 'file'); }
   catch (error) { if (['EPERM', 'EACCES'].includes(error.code)) { t.skip('Symlink permission unavailable'); return; } throw error; }
-  assert.equal(run('apply', target, 'git-workflow').code, 1);
+  assert.equal(run('apply', target, 'git-confirm-pr').code, 1);
   assert.equal(fs.existsSync(outside), false);
   const second = project();
   const outsideDirectory = path.join(scratch, 'outside-directory');
   fs.mkdirSync(outsideDirectory);
   fs.symlinkSync(outsideDirectory, path.join(second, '.agents'), process.platform === 'win32' ? 'junction' : 'dir');
-  assert.equal(run('apply', second, 'git-workflow').code, 1);
+  assert.equal(run('apply', second, 'git-confirm-pr').code, 1);
   assert.deepEqual(fs.readdirSync(outsideDirectory), []);
 });
 
 test('ordinary mid-write failure rolls back installed and removed files', () => {
   const target = project();
-  ok('apply', target, 'git-workflow');
+  ok('apply', target, 'git-confirm-pr');
   const before = snapshot(target);
   const program = `
     import fs from 'node:fs';
