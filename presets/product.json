@@ -1,0 +1,8 @@
+{
+  "modules": [
+    "git-confirm-pr",
+    "go-ddd",
+    "skill-authoring",
+    "project-init"
+  ]
+}

@@ -1,0 +1,11 @@
+---
+description: "Demo Go DDD layering for skill-hub projects."
+globs: "**/*.go"
+alwaysApply: false
+---
+
+# Go DDD (demo)
+
+Prefer `internal/domain`, `internal/application`, `internal/adapters`.
+Domain code must not import web frameworks or database drivers.
+Keep HTTP/DB mapping in adapters; keep use-case orchestration in application.

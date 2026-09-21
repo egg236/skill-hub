@@ -1,0 +1,6 @@
+{
+  "modules": [
+    "git-confirm-pr",
+    "go-ddd"
+  ]
+}
