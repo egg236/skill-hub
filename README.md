@@ -6,6 +6,8 @@ GUI и установка модулей работают локально на 
 
 ## Demo
 
+https://github.com/user-attachments/assets/1c74a9a0-3455-4216-ac53-61fdfa782230
+
 ![Каталог модулей](docs/screenshots/modules.webp)
 
 | Редактор модуля | Подключение модулей к проекту |
